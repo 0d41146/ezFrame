@@ -1,4 +1,4 @@
-BUILD_DIR := ../../../../soc/build/digilent_arty
+BUILD_DIR := ../../../../soc/build/digilent_arty.proj1
 SOC_DIRECTORY := ../../../../tools/litex/litex/soc
 BIOS_DIRECTORY := $(BUILD_DIR)/software/bios
 
@@ -14,7 +14,7 @@ ifdef WITH_CXX
 endif
 
 
-all: chmod demo.bin
+all: chmod software.bin
 
 chmod:
 	chmod -R u+w ../*
@@ -28,7 +28,7 @@ endif
 
 vpath %.a $(PACKAGES:%=../%)
 
-demo.elf: $(OBJECTS)
+software.elf: $(OBJECTS)
 	$(CC) $(LDFLAGS) -T linker.ld -N -o $@ \
 		$(OBJECTS) \
 		$(PACKAGES:%=-L$(BUILD_DIR)/software/%) \
@@ -59,6 +59,6 @@ VPATH = $(BIOS_DIRECTORY):$(BIOS_DIRECTORY)/cmds:$(CPU_DIRECTORY)
 	$(assemble)
 
 clean:
-	$(RM) $(OBJECTS) demo.elf demo.bin .*~ *~
+	$(RM) $(OBJECTS) software.elf software.bin .*~ *~
 
 .PHONY: all clean
