@@ -18,18 +18,36 @@ PROJ_DIR := $(realpath .)
 CFU_VERILOG := $(PROJ_DIR)/cfu.v
 BUILD_DIR := $(PROJ_DIR)/build
 
-SOFTWARE_BIN := $(BUILD_DIR)/software.bin
-SOFTWARE_ELF := $(BUILD_DIR)/software.elf
+SOFTWARE_BIN := $(BUILD_DIR)/src/software.bin
+SOFTWARE_ELF := $(BUILD_DIR)/src/software.elf
 
 SRC_DIR := $(abspath $(PROJ_DIR)/src)
 SOC_MK := $(MAKE) -C $(SOC_DIR) -f $(SOC_DIR)/common_soc.mk
 
 
-.PHONY: prog clean
+
+.PHONY: prog load clean litex-software build-dir
 prog: $(CFU_VERILOG)
 	$(SOC_MK) prog
+
+load: $(SOFTWARE_BIN)
+	python3 $(LXTERM) --kernel $(SOFTWARE_BIN) $(TTY)
+
+litex-software:
+	$(SOC_MK) litex-software
+
+build-dir: $(BUILD_DIR)/src
+	@echo "build-dir: copying source to build dir"
+	cp -r $(SRC_DIR)/* $(BUILD_DIR)/src
 
 clean:
 	$(SOC_MK) clean
 	@echo Removin $(BUILD_DIR)
 	rm -rf $(BUILD_DIR)
+
+$(BUILD_DIR)/src:
+	@echo "Making BUILD_DIR"
+	@mkdir -p $(BUILD_DIR)/src
+
+$(SOFTWARE_BIN): litex-software build-dir
+	$(MAKE) -C $(BUILD_DIR)/src all -j

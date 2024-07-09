@@ -29,7 +29,7 @@ TARGET_RUN := $(CFU_ROOT)/soc/common_soc.py $(LITEX_ARGS)
 BIOS_BIN := $(OUT_DIR)/software/bios/bios.bin
 BITSTREAM := $(OUT_DIR)/gateware/$(TARGET).bit
 
-.PHONY: prog clean
+.PHONY: prog clean litex-software
 
 clean:
 	@echo Removing $(OUT_DIR)
@@ -38,6 +38,11 @@ clean:
 prog: $(BITSTREAM)
 	@echo Loading bitstream onto board
 	python3 $(TARGET_RUN) --no-compile-software --load
+
+litex-software: $(BIOS_BIN)
+
+$(BIOS_BIN): $(CFU_V)
+	python3 $(TARGET_RUN)
 
 $(BITSTREAM):
 	@echo Building bitstream for $(TARGET).

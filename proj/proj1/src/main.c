@@ -13,6 +13,8 @@
 #include <sys/time.h>
 #include <assert.h>
 
+#include "riscv.h"
+
 #define NAME "qn24b base"
 #define VER  "version 1.0.1 2004-09-02"
 #define MAX 32 /** 32 is a real max! **/
@@ -101,7 +103,10 @@ int main(void) {
 #endif
 	uart_init();
   
+
+
   queens();
+  int x = opcode_R(0x0B, 1, 0, 0, 0);
   printf("%d\n", total);
   return 0;
 }

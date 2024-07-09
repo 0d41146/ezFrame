@@ -85,9 +85,11 @@ class BaseSoC(SoCCore):
         with_dram = True
         self.crg = _CRG(platform, sys_clk_freq, with_dram)
 
-        # SoCCore ----------------------------------------------------------------------------------
+        # SoCCore  ----------------------------------------------------------------------------------
         SoCCore.__init__(self, platform, sys_clk_freq,
             ident          = "LiteX SoC on Digilent Arty A7",
+            cpu_variant    = "full+cfu",
+            cpu_cfu        = "cfu.v",
             **kwargs)
         
         # XADC -------------------------------------------------------------------------------------

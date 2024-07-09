@@ -1,5 +1,5 @@
-BUILD_DIR := ../../../../soc/build/digilent_arty.proj1
-SOC_DIRECTORY := ../../../../tools/litex/litex/soc
+BUILD_DIR := $(CFU_ROOT)/soc/build/digilent_arty.proj1
+SOC_DIRECTORY := $(CFU_ROOT)/tools/litex/litex/soc
 BIOS_DIRECTORY := $(BUILD_DIR)/software/bios
 
 
@@ -7,7 +7,7 @@ BIOS_DIRECTORY := $(BUILD_DIR)/software/bios
 include $(BUILD_DIR)/software/include/generated/variables.mak
 include $(SOC_DIRECTORY)/software/common.mak
 
-OBJECTS   = donut.o helloc.o crt0.o main.o
+OBJECTS   = crt0.o main.o
 ifdef WITH_CXX
 	OBJECTS += hellocpp.o
 	CFLAGS += -DWITH_CXX
