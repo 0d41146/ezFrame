@@ -24,26 +24,26 @@ OUT_DIR := build/$(SOC_NAME)
 LITEX_ARGS += --output-dir $(OUT_DIR)
 LITEX_ARGS += --csr-json $(OUT_DIR)/csr.json
 
-TARGET_RUN := $(CFU_ROOT)/soc/common_soc.py $(LITEX_ARGS)
+PYRUN := $(CFU_ROOT)/pyrun
+TARGET_RUN := MAKEFLAGS=-j $(PYRUN) $(CFU_ROOT)/soc/common_soc.py $(LITEX_ARGS)
 
 BIOS_BIN := $(OUT_DIR)/software/bios/bios.bin
 BITSTREAM := $(OUT_DIR)/gateware/$(TARGET).bit
 
 .PHONY: prog clean litex-software
-
 clean:
 	@echo Removing $(OUT_DIR)
 	rm -rf $(OUT_DIR)
 
 prog: $(BITSTREAM)
 	@echo Loading bitstream onto board
-	python3 $(TARGET_RUN) --no-compile-software --load
+	$(TARGET_RUN) --no-compile-software --load
 
 litex-software: $(BIOS_BIN)
 
 $(BIOS_BIN): $(CFU_V)
-	python3 $(TARGET_RUN)
+	$(TARGET_RUN)
 
 $(BITSTREAM):
 	@echo Building bitstream for $(TARGET).
-	python3 $(TARGET_RUN) --build $(LITEX_ARGS)
+	$(TARGET_RUN) --build $(LITEX_ARGS)

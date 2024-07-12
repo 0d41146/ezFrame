@@ -24,6 +24,8 @@ SOFTWARE_ELF := $(BUILD_DIR)/src/software.elf
 SRC_DIR := $(abspath $(PROJ_DIR)/src)
 SOC_MK := $(MAKE) -C $(SOC_DIR) -f $(SOC_DIR)/common_soc.mk
 
+PYRUN           := $(CFU_ROOT)/pyrun
+
 
 
 .PHONY: prog load clean litex-software build-dir

@@ -1,0 +1,16 @@
+#!/bin/bash
+set -e
+CFU_ROOT=$(dirname $(realpath ${BASH_SOURCE[0]}))
+PYTHONPATH="${CFU_ROOT}/python"
+for i in "${CFU_ROOT}/tools/"*; do
+    # Avoid adding files such as README.md to our path
+    # - ValentyUsb is special-cased: it has a src/ directory
+    #    that is *not* for Python
+    if [ -d "$i/src" ] && [[ "$i" != *"valentyusb"* ]]; then
+        PYTHONPATH="${PYTHONPATH}:${i}/src"
+    elif [ -d "$i" ]; then
+        PYTHONPATH="${PYTHONPATH}:${i}"
+    fi
+done
+export PYTHONPATH
+python3 "$@"
